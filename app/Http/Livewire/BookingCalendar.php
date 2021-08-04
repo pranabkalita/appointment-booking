@@ -9,6 +9,7 @@ use Livewire\Component;
 class BookingCalendar extends Component
 {
     public $date;
+    public $time;
     public $calendarStartDate;
 
     public $service;
@@ -19,6 +20,11 @@ class BookingCalendar extends Component
         $this->calendarStartDate = now();
 
         $this->setDate(now()->timestamp);
+    }
+
+    public function updatedTime($time)
+    {
+        $this->emitUp('updated-booking-time', $time);
     }
 
     public function setDate($timestamp)
