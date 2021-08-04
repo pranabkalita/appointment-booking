@@ -31,16 +31,20 @@
     </div>
 
     <div class="max-h-52 overflow-y-scroll">
-        <input type="radio" name="time" id="" value="" class="sr-only">
-        <label for="" class="w-full text-left focus:outline-none px-4 py-2 cursor-pointer flex items-center border-b border-gray-100">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            9.00 am
-        </label>
-
-        <div class="text-center text-gray-700 px-4 py-2">
-            No available slots.
-        </div>
+        @if($this->availableTimeSlots->count())
+            @foreach ($this->availableTimeSlots as $slot)
+                <input type="radio" name="time" id="" value="" class="sr-only">
+                <label for="" class="w-full text-left focus:outline-none px-4 py-2 cursor-pointer flex items-center border-b border-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    {{ $slot->format('g:i A') }}
+                </label>
+            @endforeach
+        @else
+            <div class="text-center text-gray-700 px-4 py-2">
+                No available slots.
+            </div>
+        @endif
     </div>
 </div>
