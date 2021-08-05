@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Appointment;
 use App\Models\Employee;
 use App\Models\Service;
 use Carbon\Carbon;
@@ -12,14 +13,27 @@ class CreateBooking extends Component
     public $employees;
 
     public $state = [
-        'service' => '',
-        'employee' => '',
-        'time' => ''
+        'service' => '1',
+        'employee' => '1',
+        'time' => '',
+        'name' => '',
+        'email' => ''
     ];
 
     protected $listeners = [
         'updated-booking-time' => 'setTime'
     ];
+
+    protected function rules()
+    {
+        return [
+            'state.service' => 'required|exists:services,id',
+            'state.employee' => 'required|exists:employees,id',
+            'state.time' => 'required|numeric',
+            'state.name' => 'required|string',
+            'state.email' => 'required|email',
+        ];
+    }
 
     public function mount()
     {
@@ -47,6 +61,24 @@ class CreateBooking extends Component
     public function updatedStateEmployee()
     {
         $this->clearTime();
+    }
+
+    public function createBooking()
+    {
+        $this->validate();
+
+        $bookingFields = [
+            'date' => $this->timeObject->toDateString(),
+            'start_time' => $this->timeObject->toTimeString(),
+            'end_time' => $this->timeObject->clone()->addMinutes($this->selectedService->duration)->toTimeString(),
+            'client_name' => $this->state['name'],
+            'client_email' => $this->state['email'],
+        ];
+
+        $appointment = Appointment::make($bookingFields);
+        $appointment->service()->associate($this->selectedService);
+        $appointment->employee()->associate($this->selectedEmployee);
+        $appointment->save();
     }
 
     public function clearTime()
