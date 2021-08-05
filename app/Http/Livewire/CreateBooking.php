@@ -13,8 +13,8 @@ class CreateBooking extends Component
     public $employees;
 
     public $state = [
-        'service' => '1',
-        'employee' => '1',
+        'service' => '',
+        'employee' => '',
         'time' => '',
         'name' => '',
         'email' => ''
@@ -79,6 +79,8 @@ class CreateBooking extends Component
         $appointment->service()->associate($this->selectedService);
         $appointment->employee()->associate($this->selectedEmployee);
         $appointment->save();
+
+        return redirect()->to(route('bookings.show', $appointment) . '?token=' . $appointment->token);
     }
 
     public function clearTime()
