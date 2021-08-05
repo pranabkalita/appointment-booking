@@ -25,5 +25,17 @@
 
             <livewire:booking-calendar :service="$this->selectedService" :employee="$this->selectedEmployee" :key="optional($this->selectedEmployee)->id" />
         </div>
+
+        @if($this->hasDetailsToBook)
+            <div class="mb-6">
+                <div class="text-gray-700 font-bold mb-2">
+                    You're ready to book.
+                </div>
+
+                <div class="border-t border-b border-gray-300 py-2">
+                    {{ $this->selectedService->name }} ({{ $this->selectedService->duration }} minutes) with {{ $this->selectedEmployee->name }} on {{ $this->timeObject->format('D jS M Y') }} at {{ $this->timeObject->format('g:i A') }}
+                </div>
+            </div>
+        @endif
     </form>
 </div>
